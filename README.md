@@ -1,7 +1,7 @@
 ![JaBlog logo](./screenshots/logo.svg)
 
 # JaBlog
-**JaBlog** is a web app using Spring Boot site for Java Language.
+**JaBlog** is a web app using Spring Boot for Java Language.
 
 
 
