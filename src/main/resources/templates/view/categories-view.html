@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <th:block th:replace="fragments/fragments :: head('Categories')"></th:block>
+        <style type="text/css">
+        	.smCard:hover {
+			  transform:scale(1.1);
+			}
+        </style>
+    </head>
+    <body>
+        <!-- Navigation-->
+        <div th:replace="fragments/fragments :: navigation"></div>
+        
+        <!-- Page Header-->
+        <div th:replace="fragments/fragments :: pageHeaderWithoutSearch"></div>
+       
+      
+        <!-- Main Content-->
+        <div class="container px-4 px-lg-5 pt-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                 <div class="container">
+					<div class="row">
+						<th:block th:each="category : ${categories}">
+							<th:block th:if="${category.parent == null}">
+								<th:block th:replace="fragments/cards :: root-card(${category})"></th:block>
+							</th:block>
+						</th:block>
+					</div>
+				</div>
+				<div style="height: 200px"></div>
+            </div>
+        </div>
+        
+        <!-- Footer-->
+        <div th:replace="fragments/fragments :: footer"></div>
+        
+        <!-- Bootstrap core JS-->
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/font-awesome/js/all.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+        <!-- Core theme JS-->
+        <script th:src="@{/js/scripts.js}"></script>
+    </body>
+</html>

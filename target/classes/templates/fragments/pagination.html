@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+	<div th:fragment="pagination(entity)">
+	
+		<div class="text-center m-1" th:if="${totalElements > 0}">
+			<span th:text="'(' + ${startCount}+' to '+${endCount}+') of '+${totalElements}"></span>
+		</div>
+		<div class="text-center m-1" th:unless="${totalElements > 0}">
+			<span>No [[${entity}]] found.</span>
+		</div>
+	
+		<nav aria-label="Page navigation example">
+			<ul class="pagination justify-content-center">
+				<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+					<th:block th:replace="fragments/links :: page-link('1', 'First')"></th:block>
+				</li>
+				<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+					<th:block th:replace="fragments/links :: page-link(${currentPage-1}, 'Previous')"></th:block>
+				</li>
+				
+				<li th:class="${currentPage != i ? 'page-item' : 'page-item disabled'}" th:each="i : ${#numbers.sequence(1, totalPages)}">
+					<th:block th:replace="fragments/links :: page-link(${i}, ${i})"></th:block>
+				</li>
+				
+				<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+					<th:block th:replace="fragments/links :: page-link(${currentPage+1}, 'Next')"></th:block>
+				</li>
+				<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+					<th:block th:replace="fragments/links :: page-link(${totalPages}, 'Last')"></th:block>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	
+
+	<div th:fragment="paginationGeneral">
+		<nav aria-label="Page navigation example">
+			<ul class="pagination justify-content-center">
+				<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+					<th:block th:replace="fragments/links :: page-link('1', 'First')"></th:block>
+				</li>
+				<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+					<th:block th:replace="fragments/links :: page-link(${currentPage-1}, 'Previous')"></th:block>
+				</li>
+				
+				<li th:class="${currentPage != i ? 'page-item' : 'page-item disabled'}" th:each="i : ${#numbers.sequence(1, totalPages)}">
+					<th:block th:replace="fragments/links :: page-link(${i}, ${i})"></th:block>
+				</li>
+				
+				<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+					<th:block th:replace="fragments/links :: page-link(${currentPage+1}, 'Next')"></th:block>
+				</li>
+				<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+					<th:block th:replace="fragments/links :: page-link(${totalPages}, 'Last')"></th:block>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+	
+	
+</body>
+</html>

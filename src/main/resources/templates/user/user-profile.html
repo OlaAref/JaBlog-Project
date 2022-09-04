@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+		xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <th:block th:replace="fragments/fragments :: head('Profile')"></th:block>
+    </head>
+    <body>
+    
+    	<!-- Toast -->
+        <div th:replace="fragments/toasts :: success"></div>
+        <div th:replace="fragments/toasts :: warning"></div>
+        <div th:replace="fragments/toasts :: error"></div>
+    
+       <!-- Navigation-->
+        <div sec:authorize="hasAuthority('blogger')" th:replace="fragments/fragments :: profileNav"></div>
+        <div sec:authorize="hasAuthority('admin')" th:replace="fragments/admin-fragments :: navigation"></div>
+        
+        <!-- Page content-->
+
+		<article class="mb-4" id="font-style">
+			<div class="container px-4 px-lg-5">
+				<div class="row gx-4 gx-lg-5 justify-content-center">
+	
+					<div class="col-md-10 col-lg-8 col-xl-7">
+						<form th:action="@{/blogger/save}" method="post" th:object="${user}" enctype="multipart/form-data">
+						
+						<div class="d-flex flex-column align-items-center text-center p-3 py-5">
+							<img th:if="${user.image == null}" class="rounded-circle mt-5" width="150px" th:src="@{/image/user-photo.jpg}" id="previewImage">
+							<img th:if="${user.image != null}" class="rounded-circle mt-5" width="150px" th:src="@{${user.imagePath}}" id="previewImage">
+							<label class="btn btn-primary"> Change Picture
+								<input type="file" name="photo" style="width: 0px; height: 0px; overflow: hidden;" onchange="readURL(this)">
+							</label> 
+							<span class="font-weight-bold">[[${user.fullName}]]</th:block></span>
+							<span class="text-black-50">[[${user.email}]]</span>
+							<span class="text-black-50" th:text="'Since '+${#temporals.format(user.createdTime, 'dd MMM, YYYY')}"></span>
+						</div>
+						
+						<div class="p-3 py-5">
+							<div class="d-flex justify-content-between align-items-center mb-3">
+								<h4 class="text-right">Profile Settings</h4>
+							</div>
+							
+							<input type="hidden" th:field="*{id}">
+							<input type="hidden" th:field="*{authenticationType}">
+							<input type="hidden" th:field="*{createdTime}">
+							<input type="hidden" th:field="*{role}">
+							
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label class="col-form-label">First Name</label>
+									<input type="text" class="form-control" placeholder="first name" th:field="*{firstName}">
+								</div>
+								<div class="col-md-6">
+									<label class="col-form-label">Last Name</label>
+									<input type="text" class="form-control" placeholder="surname" th:field="*{lastName}">
+								</div>
+							</div>
+							<div class="row mt-3">
+								<div class="col-md-12">
+									<label class="col-form-label">Mobile Number</label>
+									<input type="text" class="form-control" placeholder="enter phone number" th:field="*{phone}">
+								</div>
+								<div class="col-md-12">
+									<label class="col-form-label">Country</label>
+									<select th:field="*{country}" class="form-select" id="countrySelect">
+										<option value="">Select Country</option>
+										<th:block th:each="country : ${countries}">
+											<option th:value="${country.id}">[[${country.name}]]</option>
+										</th:block>
+									</select>
+								</div>
+								<div class="col-md-12">
+									<label class="col-form-label">Email ID <b class="text-danger" th:if="${user.authenticationType.name() == 'DATABASE'}">(Requires logging in again)</b></label>
+									<input th:if="${user.authenticationType.name() == 'DATABASE'}" type="email" class="form-control" placeholder="enter email id" th:field="*{email}">
+									<input th:if="${user.authenticationType.name() != 'DATABASE'}" type="email" class="form-control" placeholder="enter email id" th:field="*{email}" readonly="readonly">
+								</div>
+								<div class="col-md-12">
+									<label class="col-form-label">Education</label>
+									<input type="text" class="form-control" placeholder="education" th:field="*{education}">
+								</div>
+								<div class="col-md-12" th:if="${user.authenticationType.name() == 'DATABASE'}">
+									<label class="col-form-label">Password</label><br>
+									<a class="btn btn-danger profile-button" th:href="@{'/account/changePasswordRequest/'+${user.id}}">Change Password</a>
+								</div>
+							</div>
+							<div class="mt-5 text-center">
+								<button class="btn btn-primary profile-button" type="submit">Save Profile</button>
+							</div>
+						</div>
+					</form>
+					</div>
+				</div>
+			</div>
+		</article>
+		
+	
+		<div style="height: 500px"></div>
+        
+        <!-- Footer-->
+        <div th:replace="fragments/admin-fragments :: footer"></div>
+        
+        <!-- Bootstrap core JS-->
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/font-awesome/js/all.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap-select/js/bootstrap-select.min.js}"></script>
+		
+		<script th:src="@{/js/main-script.js}"></script>
+		
+		<script type="text/javascript">
+			$(document).ready(function (){
+				var passwordChanged = "[[${passwordChanged}]]";
+		        if(passwordChanged != null && passwordChanged != ''){
+		        	showToast('success', 'Password Changed', passwordChanged);
+		        }
+		        
+		        var message = "[[${message}]]";
+		        if(message != null && message != ''){
+		        	showToast('success', 'Account', message);
+		        }
+			});
+			
+			function readURL(input) {
+	            if (input.files && input.files[0]) {
+	                var reader = new FileReader();
+	                reader.onload = function (e) {
+	                    $('#previewImage').attr('src', e.target.result);
+	                };
+	                reader.readAsDataURL(input.files[0]);
+	            }
+	        }
+		</script>
+
+    </body>
+</html>

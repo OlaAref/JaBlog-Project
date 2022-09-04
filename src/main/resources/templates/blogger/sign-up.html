@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <th:block th:replace="fragments/fragments :: head('Sign Up')"></th:block>
+    </head>
+    <body>
+       <!-- Navigation-->
+        <div th:replace="fragments/fragments :: navigation"></div>
+        
+        <!-- Page Header-->
+        <div th:replace="fragments/fragments :: pageHeaderWithoutSearch"></div>
+        
+        <!-- Page content-->
+
+		<article class="mb-4" id="font-style">
+			<div class="container px-4 px-lg-5">
+				<div class="row gx-4 gx-lg-5 justify-content-center">
+	
+					<div class="col-md-10 col-lg-8 col-xl-7">
+						<form th:action="@{/blogger/createBlogger}" th:object="${user}" method="post" onsubmit="return emailCheck(this);" enctype="multipart/form-data" 
+								class="needs-validation" novalidate>
+						
+						<div class="p-3 py-5">
+							<div class="d-flex justify-content-between align-items-center mb-3">
+								<h4 class="text-right">Sign Up</h4>
+							</div>
+							
+							<th:block th:if="${errorMessage != null}">
+								<div th:replace="fragments/fragments :: alert(${errorMessage})"></div>
+							</th:block>
+							
+							<input type="hidden" th:field="*{id}">
+							
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label class="col-form-label">First Name</label>
+									<input type="text" class="form-control" placeholder="first name" th:field="*{firstName}" required>
+								</div>
+								<div class="col-md-6">
+									<label class="col-form-label">Last Name</label>
+									<input type="text" class="form-control" th:field="*{lastName}" placeholder="Last Name" required>
+								</div>
+							</div>
+							<div class="row mt-3">
+								<div class="col-md-12">
+									<label class="col-form-label">Email ID</label>
+									<input type="text" class="form-control" placeholder="enter email id" th:field="*{email}" required>
+								</div>
+								<div class="col-md-12">
+									<label class="col-form-label" for="validationPassword">Password</label>
+									<!--  <input type="password" class="form-control" th:field="*{password}" required>-->
+									<div th:replace="fragments/fragments :: passwordField('validationPassword', 'password')"></div>
+								</div>
+								<div class="col-md-12">
+									<label class="col-form-label">Confirm Password</label>
+									<input type="password" class="form-control" name="confirmPassword" required>
+								</div>
+								<div class="col-md-12">
+									<label class="col-form-label">Mobile Number</label>
+									<input type="text" class="form-control" placeholder="enter phone number" th:field="*{phone}">
+								</div>
+								<div class="col-md-12">
+									<label class="col-form-label">Country</label>
+									<select th:field="*{country}" class="form-select" id="countrySelect">
+										<option value="">Select Country</option>
+										<th:block th:each="country : ${countries}">
+											<option th:value="${country.id}">[[${country.name}]]</option>
+										</th:block>
+									</select>
+								</div>
+								<div class="col-md-12">
+									<label class="col-form-label">Education</label>
+									<input type="text" class="form-control" placeholder="education" th:field="*{education}">
+								</div>
+								<div class="col-md-12 mt-3">
+									<label class="col-form-label me-3">Profile Picture</label>
+									<label class="btn btn-outline-dark link-padding">Choose Picture
+										<input id="photoFile" type="file" name="photo" style="width: 0px; height: 0px; overflow: hidden;">
+									</label>
+									<br>
+									<small id="photoNote" class="fw-light text-danger"></small>
+									<img class="mt-3 d-none" width="100%" id="previewImage">
+								</div>
+							</div>
+							<div class="mt-5 text-center">
+								<button class="btn btn-primary profile-button" type="submit">Sign Up</button>
+							</div>
+						</div>
+					</form>
+					
+					</div>
+				</div>
+			</div>
+		</article>
+		
+	
+		<div th:replace="fragments/modals :: success"></div>
+		<div th:replace="fragments/modals :: warning"></div>
+		<div th:replace="fragments/modals :: error"></div>
+		
+		<div style="height: 500px"></div>
+        
+        <!-- Footer-->
+        <div th:replace="fragments/admin-fragments :: footer"></div>
+        
+        <!-- Bootstrap core JS-->
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/font-awesome/js/all.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap-select/js/bootstrap-select.min.js}"></script>
+		
+		<script th:src="@{/richText/jquery.richtext.min.js}"></script>
+		<script th:src="@{/js/scripts.js}"></script>
+		<script th:src="@{/js/main-script.js}"></script>
+		<script th:src="@{/js/password-validation.js}"></script>
+		
+		<script type="text/javascript">
+			
+			var contextPath = "[[@{/}]]";
+			var csrfHeaderName = "[[${_csrf.headerName}]]";
+			var csrfValue = "[[${_csrf.token}]]";
+		
+			$(document).ready(function (){
+				
+				$('#photoFile').change(function() {
+					if(checkFileSize(this, 3)){
+						previewPic(this);
+					}
+					else{
+						$('#previewImage').attr('src', '');
+					}
+				});
+			});
+			
+			
+		</script>
+
+    </body>
+</html>

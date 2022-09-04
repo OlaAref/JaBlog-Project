@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<body>
+
+	<div th:fragment="content" th:remove="tag">
+	
+		<form th:action="@{/setting/saveMailServer}" method="post">
+			<div class="p-3">
+				<div class="row mt-1">
+					<div class="col-md-12">
+						<label class="col-form-label">SMTP Server Host Name</label>
+						<input type="text" class="form-control" name="MAIL_HOST" th:value="${MAIL_HOST}">
+					</div>
+					<div class="col-md-12">
+						<label class="col-form-label">Port Number</label>
+						<input type="text" class="form-control" name="MAIL_PORT" th:value="${MAIL_PORT}">
+					</div>
+					<div class="col-md-12">
+						<label class="col-form-label">Username</label>
+						<input type="text" class="form-control" name="MAIL_USERNAME" th:value="${MAIL_USERNAME}">
+					</div>
+					<div class="col-md-12">
+						<label class="col-form-label">Password</label>
+						<input type="text" class="form-control" name="MAIL_PASSWORD" th:value="${MAIL_PASSWORD}">
+					</div>
+					<div class="col-md-12">
+						<label class="col-form-label">Mail From</label>
+						<input type="text" class="form-control" name="MAIL_FROM" th:value="${MAIL_FROM}">
+					</div>
+					<div class="col-md-12">
+						<label class="col-form-label">Mail Sender Name</label>
+						<input type="text" class="form-control" name="MAIL_SENDER_NAME" th:value="${MAIL_SENDER_NAME}">
+					</div>
+					<div class="col-md-12">
+						<label class="col-form-label">Server authentication required</label>
+						<select class="form-select" name="SMTP_AUTH">
+							<option value="true" th:selected="(${SMTP_AUTH} == 'true')">True</option>
+							<option value="false" th:selected="(${SMTP_AUTH} == 'false')">False</option>
+						</select>
+					</div>
+					<div class="col-md-12">
+						<label class="col-form-label">Server requires secure connection (TLS)</label>
+						<select class="form-select" name="SMTP_SECURED">
+							<option value="true" th:selected="(${SMTP_SECURED} == 'true')">True</option>
+							<option value="false" th:selected="(${SMTP_SECURED} == 'false')">False</option>
+						</select>
+					</div>
+					
+					<div class="mt-5 text-center">
+						<button class="btn btn-primary profile-button" type="submit">Save</button>
+					</div>
+				</div>
+			</div>
+		</form>
+
+	</div>
+	
+	
+</body>
+</html>

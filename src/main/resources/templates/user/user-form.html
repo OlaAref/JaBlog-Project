@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <th:block th:replace="fragments/fragments :: head('User Form')"></th:block>
+    </head>
+    <body>
+       <!-- Navigation-->
+        <div th:replace="fragments/admin-fragments :: navigation"></div>
+        
+        <!-- Page content-->
+
+		<article class="mb-4" id="font-style">
+			<div class="container px-4 px-lg-5">
+				<div class="row gx-4 gx-lg-5 justify-content-center">
+	
+					<div class="col-md-10 col-lg-8 col-xl-7">
+						<form th:action="@{/user/save}" method="post" th:object="${user}" onsubmit="return emailCheck(this)" enctype="multipart/form-data" 
+								class="needs-validation" novalidate>
+						
+						<div class="p-3 py-5">
+							<div class="d-flex justify-content-between align-items-center mb-3">
+								<h4 class="text-right">[[${pageTitle}]] User</h4>
+							</div>
+							
+							<input type="hidden" th:field="*{id}">
+							<input type="hidden" th:field="*{authenticationType}">
+							<input type="hidden" th:field="*{createdTime}">
+							
+							<div class="row mt-2">
+								<div class="col-md-6">
+									<label class="col-form-label">First Name</label>
+									<input type="text" class="form-control" placeholder="first name" value="" th:field="*{firstName}"
+											required minlength="3" maxlength="45">
+								</div>
+								<div class="col-md-6">
+									<label class="col-form-label">Last Name</label>
+									<input type="text" class="form-control" value="" placeholder="Last Name" th:field="*{lastName}"
+											required minlength="3" maxlength="45">
+								</div>
+							</div>
+							<div class="row mt-3">
+								<div class="col-md-12">
+									<label class="col-form-label">Email ID</label>
+									<input type="email" class="form-control" placeholder="enter email id" value="" th:field="*{email}"
+											required minlength="8" maxlength="128">
+								</div>
+								<th:block th:if="${user.id == null}">
+								<div class="col-md-12">
+									<label class="col-form-label">Password</label>
+									<div th:replace="fragments/fragments :: passwordField('validationPassword', 'password')"></div>
+									
+								</div>
+								<div class="col-md-12">
+									<label class="col-form-label">Confirm Password</label>
+									<input type="password" class="form-control" value="" name="confirmPassword" required>
+								</div>
+								</th:block>
+								<div class="col-md-12">
+									<label class="col-form-label">Mobile Number</label>
+									<input type="text" class="form-control" placeholder="enter phone number" value="" th:field="*{phone}"
+											minlength="11" maxlength="45">
+								</div>
+								<div class="col-md-12">
+									<label class="col-form-label">Country</label>
+									<select th:field="*{country}" class="form-select" id="countrySelect">
+										<option value="">Select Country</option>
+										<th:block th:each="country : ${countries}">
+											<option th:value="${country.id}">[[${country.name}]]</option>
+										</th:block>
+									</select>
+								</div>
+								<div class="col-md-12">
+									<label class="col-form-label">Education</label>
+									<input type="text" class="form-control" placeholder="education" value="" th:field="*{education}"
+										   minlength="8" maxlength="200">
+								</div>
+								<div class="col-md-12">
+									<label class="col-form-label">Role</label>
+									<div th:each="role : ${roles}">
+										<div class="form-check">
+										  <input class="form-check-input" type="radio" name="role" th:field="*{role}" required th:value="${role.id}">
+										  <label class="form-check-label fw-light">[[${role.name}]] - [[${role.description}]]</label>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<label class="col-form-label">Enabled</label>
+									<div class="form-check">
+									  <input class="form-check-input" type="checkbox" th:field="*{enabled}">
+									  <label class="form-check-label fw-light">Enabled</label>
+									</div>
+								</div>
+								<div class="col-md-12 mt-3">
+								<input type="hidden" th:field="*{image}">
+									<label class="col-form-label me-3">Profile Picture (Max 3 MB.)</label>
+									<label class="btn btn-outline-dark link-padding">Choose Picture
+										<input id="photoFile" type="file" name="photo" style="width: 0px; height: 0px; overflow: hidden;">
+									</label>
+									<br>
+									<small id="photoNote" class="fw-light text-danger"></small>
+									<img class="mt-3" width="100%" id="previewImage" th:src="@{${user.imagePath}}">
+								</div>
+							</div>
+							<div class="mt-5 text-center">
+								<button class="btn btn-primary profile-button" type="submit">Save User</button>
+							</div>
+						</div>
+					</form>
+					</div>
+				</div>
+			</div>
+		</article>
+		
+		<div th:replace="fragments/modals :: success"></div>
+		<div th:replace="fragments/modals :: warning"></div>
+		<div th:replace="fragments/modals :: error"></div>
+	
+		<div style="height: 500px"></div>
+        
+        <!-- Footer-->
+        <div th:replace="fragments/admin-fragments :: footer"></div>
+        
+        <!-- Bootstrap core JS-->
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/font-awesome/js/all.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap-select/js/bootstrap-select.min.js}"></script>
+		<script th:src="@{/richText/jquery.richtext.min.js}"></script>
+		
+		<script th:src="@{/js/main-script.js}"></script>
+		<script th:src="@{/js/password-validation.js}"></script>
+		
+		<script type="text/javascript">
+			
+			var contextPath = "[[@{/}]]";
+			var csrfHeaderName = "[[${_csrf.headerName}]]";
+			var csrfValue = "[[${_csrf.token}]]";
+		
+			$(document).ready(function (){
+				$('#content').richText();
+				
+				$('#photoFile').change(function() {
+					if(checkFileSize(this, 3)){
+						previewPic(this);
+					}
+					else{
+						$('#previewImage').attr('src', '');
+					}
+					
+				});
+			});
+			
+			
+			
+			
+		</script>
+
+    </body>
+</html>

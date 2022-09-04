@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <th:block th:replace="fragments/fragments :: head('Post Form')"></th:block>
+        <style type="text/css">
+
+        </style>
+    </head>
+    <body>
+       <!-- Navigation-->
+       <div sec:authorize="hasAuthority('blogger')" th:replace="fragments/fragments :: profileNav"></div>
+        <div sec:authorize="isAnonymous()" th:replace="fragments/fragments :: profileNav"></div>
+        <div sec:authorize="hasAuthority('admin')" th:replace="fragments/admin-fragments :: navigation"></div>
+        
+        <!-- Page content-->
+
+		<article class="mb-4" id="font-style">
+			<div class="container px-4 px-lg-5">
+				<div class="row gx-4 gx-lg-5 justify-content-center">
+	
+					<div class="col-md-10 col-lg-8 col-xl-7">
+						<form th:action="@{/post/save}" method="post" th:object="${post}" enctype="multipart/form-data"  onsubmit="return checkPostUnique(this)">
+						
+						<div class="p-3 py-5">
+							<div class="d-flex justify-content-between align-items-center mb-3">
+								<h4 class="text-right">[[${pageTitle}]] Post</h4>
+							</div>
+							
+							<input type="hidden" th:field="*{id}">
+							<input type="hidden" th:field="*{createdTime}">
+							<input type="hidden" th:field="*{publishedTime}">
+							
+							<div id="isPublish"></div>
+							
+							<div class="row mt-3">
+							
+								<div class="col-md-12 mb-2">
+									<label class="col-form-label">Category</label><br>
+									<select th:field="*{category}" class="selectpicker show-tick" data-width="100%" id="categorySelect" >
+										<th:block th:each="cat : ${categories}">
+											<option th:value="${cat.id}">[[${cat.title}]]</option>
+										</th:block>
+									</select>
+								</div>
+								
+								<div class="col-md-12 mb-2">
+									<label class="col-form-label">Tags</label><br>
+									<div class="row">
+										<div class="col-md-10">
+											<select th:field="*{tags}" id="tagSelect" multiple class="form-select tagSelect" style="height: 150px">
+												<th:block th:each="tag : ${tagsList}">
+													<option th:value="${tag.id}" th:data-tokens="${tag.id}">[[${tag.title}]]</option>
+												</th:block>
+											</select>
+										</div>
+										<div class="col-md-2">
+											<button th:href="@{/view/tags/new}" type="button" id="addTagBtn" class="btn btn-secondary" 
+											style="height: 70px; margin-top: 40px; margin-bottom: 40px">+</button>
+										</div>
+									</div>
+								</div>
+								
+								<div class="col-md-12 mb-2" th:if="${posts != null}">
+									<label class="col-form-label">Parent Post</label><br>
+									<select th:field="*{parent}" class="selectpicker show-tick" data-width="100%" id="parentSelect" >
+										<option value="">[No Parent]</option>
+										<th:block th:each="p : ${posts}">
+											<option th:value="${p.id}">[[${p.title}]]</option>
+										</th:block>
+									</select>
+								</div>
+								
+								<div class="col-md-12 mb-2">
+									<label class="col-form-label">Chosen Tags</label>
+									<div id="chosenTags">
+										<th:block th:if="${!post.tags.isEmpty()}">
+											<th:block th:each="tagPost : ${post.tags}">
+												<span class='badge bg-dark m-1'>[[${tagPost.title}]]</span>
+											</th:block>
+										</th:block>
+									</div>
+								</div>
+								
+								<div class="col-md-12 mb-2">
+									<label class="col-form-label">Title</label>
+									<input type="text" class="form-control" placeholder="Post Title" th:field="*{title}" required 
+											minlength="3" maxlength="75" onkeyup="fillAliasField()">
+								</div>
+								
+								<div class="col-md-12 mb-2">
+									<label class="col-form-label">Alias</label>
+									<input type="text" class="form-control" placeholder="Post Alias" th:field="*{slug}" required minlength="3" maxlength="75">
+								</div>
+								
+								<div class="col-md-12 mb-2">
+									<label class="col-form-label">Content</label>
+									<textarea type="text" class="form-control" placeholder="Post Content" th:field="*{content}" 
+										required minlength="3" maxlength="75"></textarea>
+								</div>
+								
+								<div class="col-md-12 mb-2">
+									<label class="col-form-label">Summary</label>
+									<textarea type="text" class="form-control" placeholder="Post Summary" th:field="*{summary}" cols="3" rows="4" maxlength="255"></textarea>
+								</div>
+								
+								<div class="col-md-12 mt-3">
+								<input type="hidden" th:field="*{mainPic}">
+									<label class="col-form-label me-3">Main Picture (Max 3 MB.)</label>
+									<label class="btn btn-outline-dark link-padding">Choose Picture
+										<input id="photoFile" type="file" name="photo" style="width: 0px; height: 0px; overflow: hidden;">
+									</label>
+									<br>
+									<small id="photoNote" class="fw-light text-danger"></small>
+									<img class="mt-3" width="100%" id="previewImage" th:src="@{${post.mainPicPath}}">
+								</div>
+								
+							</div>
+							
+							<div th:if="${pageTitle == 'Add'}" class="mt-5 text-center">
+								<button class="btn btn-success profile-button" type="submit" onclick="enablePublish()">publish</button>
+								<button class="btn btn-primary profile-button" type="submit" id="draftBtn">Draft</button>
+								<button type="button"  class="btn btn-secondary profile-button" onclick="cancel()">Cancel</button>
+							</div>
+							<div th:if="${pageTitle == 'Edit'}" class="mt-5 text-center">
+								<button class="btn btn-primary profile-button" type="submit" onclick="setPublish()">Save</button>
+								<button type="button"  class="btn btn-secondary profile-button" onclick="cancel()">Cancel</button>
+							</div>
+							
+						</div>
+					</form>
+					</div>
+				</div>
+			</div>
+		</article>
+		
+		<div th:replace="fragments/modals :: success"></div>
+		<div th:replace="fragments/modals :: warning"></div>
+		<div th:replace="fragments/modals :: error"></div>
+		
+		<!-- Add Tag Modal -->
+		<div class="modal fade" id="tagModel">
+		  <div class="modal-dialog modal-xl">
+		    <div class="modal-content">
+		    	
+		    </div>
+		  </div>
+		</div>
+	
+		<div style="height: 500px"></div>
+        
+        <!-- Footer-->
+        <div th:replace="fragments/admin-fragments :: footer"></div>
+        
+        <!-- Bootstrap core JS-->
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/font-awesome/js/all.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap-select/js/bootstrap-select.min.js}"></script>
+		<script th:src="@{/richText/jquery.richtext.min.js}"></script>
+		
+		<script th:src="@{/js/main-script.js}"></script>
+		<script th:src="@{/js/password-validation.js}"></script>
+		
+		<script type="text/javascript">
+			
+			var contextPath = "[[@{/}]]";
+			var csrfHeaderName = "[[${_csrf.headerName}]]";
+			var csrfValue = "[[${_csrf.token}]]";
+		
+			$(document).ready(function (){
+				$('#content').richText();
+				
+				$('#photoFile').change(function() {
+					if(checkFileSize(this, 3)){
+						previewPic(this);
+					}
+					else{
+						$('#previewImage').attr('src', '');
+					}
+					
+				});
+				
+				$("#addTagBtn").click(function(e){
+					e.preventDefault();
+		        	var linkUrl = $(this).attr("href");
+		        	$("#tagModel").modal('show').find(".modal-content").load(linkUrl);
+				});
+				
+				
+				
+				var chosenTags = $("#chosenTags");
+				var tagSelect = $("#tagSelect");
+				
+				tagSelect.change(function(){
+					chosenTags.empty();
+					showChosenTags();
+				});
+
+				
+			});
+			
+			function showChosenTags(){
+				$('option:selected',tagSelect).each(function(){
+					var selectedTag = $(this);//this child
+					var tagTitle = selectedTag.text();
+					$("<span class='badge bg-dark m-1'>"+tagTitle+"</span>").appendTo(chosenTags);
+				});
+			}
+			
+			function cancel(){
+				window.location = "[[@{/post/list}]]";
+			}
+			
+			function enablePublish(){
+				$("#isPublish").append($("<input type='hidden' name='publish' value='true'>"));
+				
+			}
+			
+			function setPublish(){
+				var publish = "[[${post.publish}]]";
+				$("#isPublish").append($("<input type='hidden' name='publish' value='"+publish+"'>"));
+				
+			}
+			
+			function fillAliasField(){
+				var title = $("#title").val();
+				var slug = title.toLowerCase().trim().replace(/\s/g, "_").replace(/\W/g, "");
+				$("#slug").val(slug);
+			}
+			
+		</script>
+
+    </body>
+</html>

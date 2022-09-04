@@ -1,0 +1,57 @@
+<div>
+	<div class="modal-header">
+      <h4 class="modal-title">Add New Tag</h4>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    
+    <div class="modal-body">
+    	
+    	<form>
+						
+			<div class="p-1 py-5">
+				
+				<div class="row mt-3">
+					<div class="col-md-12">
+						<label class="col-form-label">Category</label><br>
+						<select  class="form-select" data-width="100%" id="categorySelect">
+							<th:block th:each="cat : ${categories}">
+								<option th:value="${cat.id}">[[${cat.title}]]</option>
+							</th:block>
+						</select>
+					</div>
+					
+					<div class="col-md-12">
+						<label class="col-form-label">Title</label>
+						<input type="text" class="form-control" placeholder="Tag Name" id="titleField"
+								required minlength="3" maxlength="75">
+					</div>
+					
+					<div class="col-md-12">
+						<label class="col-form-label">Description</label>
+						<textarea type="text" class="form-control" placeholder="Tag Description"  cols="3" rows="4" id="descriptionField"></textarea>
+					</div>
+					
+					<div class="col-md-12">
+						<label class="col-form-label">Slug</label>
+						<input type="text" class="form-control" placeholder="Tag Alias" id="slugField" 
+								 minlength="3" maxlength="100">
+					</div>
+					
+					
+					
+				</div>
+				
+				<div class="mt-5 text-center">
+					<button class="btn btn-primary profile-button" type="button" onclick="addTag()" id="saveNewTagBtn">Save Tag</button>
+				</div>
+				
+			</div>
+		</form>
+				
+    </div>
+    
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+    </div>
+	
+</div>

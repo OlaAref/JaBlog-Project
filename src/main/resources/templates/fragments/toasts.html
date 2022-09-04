@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+	<div th:fragment="success">
+		<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999">
+		  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="success-toast">
+		    <div class="toast-header bg-success">
+		      <div class="rounded me-2"><i class="fa-solid fa-check text-dark"></i></div>
+		      <strong class="me-auto text-white" id="success-title"></strong>
+		      <button type="button" class="btn-close text-white" data-bs-dismiss="toast" aria-label="Close"></button>
+		    </div>
+		    <div class="toast-body lora-style" id="success-body">
+		      
+		    </div>
+		  </div>
+		</div>
+	</div>
+	
+	<div th:fragment="error">
+		<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999">
+		  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="error-toast">
+		    <div class="toast-header bg-danger">
+		      <div class="rounded me-2"><i class="fa-solid fa-circle-xmark text-dark"></i></div>
+		      <strong class="me-auto text-white" id="error-title"></strong>
+		      <button type="button" class="btn-close text-white" data-bs-dismiss="toast" aria-label="Close"></button>
+		    </div>
+		    <div class="toast-body lora-style" id="error-body">
+		      
+		    </div>
+		  </div>
+		</div>
+	</div>
+	
+	<div th:fragment="warning">
+		<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999">
+		  <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="warning-toast">
+		    <div class="toast-header bg-warning">
+		      <div class="rounded me-2"><i class="fa-solid fa-triangle-exclamation text-dark"></i></div>
+		      <strong class="me-auto text-white" id="warning-title"></strong>
+		      <button type="button" class="btn-close text-white" data-bs-dismiss="toast" aria-label="Close"></button>
+		    </div>
+		    <div class="toast-body lora-style" id="warning-body">
+		      
+		    </div>
+		  </div>
+		</div>
+	</div>
+	
+	<div th:fragment="notify">
+		<div class="toast-container position-absolute top-0 end-0 p-3" style="font-family: Open Sans; font-weight: bold">
+			<div class="toast align-items-center text-white bg-primary border-0 rounded " role="alert" aria-live="assertive" aria-atomic="true" id="notifyToast">
+				<div class="d-flex">
+				  <div class="toast-body">
+				    <span id="notifyMessage"></span>
+				  </div>
+				  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+			  </div>
+			</div>
+		</div>
+	</div>
+	
+	<div th:fragment="notifyWarning">
+		<div class="toast-container position-absolute top-0 end-0 p-3" style="font-family: Open Sans; font-weight: bold">
+			<div class="toast align-items-center text-white bg-primary border-0 rounded " role="alert" aria-live="assertive" aria-atomic="true" id="notifyToastWarn">
+				<div class="d-flex">
+				  <div class="toast-body">
+				    <span id="notifyMessageWarn"></span>
+				  </div>
+				  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+			  </div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

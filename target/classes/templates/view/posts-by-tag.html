@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <th:block th:replace="fragments/fragments :: head(${tag.title}+' Posts')"></th:block>
+    </head>
+    <body>
+        <!-- Navigation-->
+        <div th:replace="fragments/fragments :: navigation"></div>
+        
+        <!-- Page Header-->
+        <div th:replace="fragments/fragments :: pageHeader"></div>
+        
+        <!-- Main Content-->
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                
+				<div class="p-2 d-flex flex-row align-items-center mb-2 text-decoration-underline">
+					<h1 style="font-family: lora">Tag '<span class="fw-light">[[${tag.title}]]</span>' posts</h1>
+				</div>
+				
+                <th:block th:unless="${totalElements > 0}">
+                	<span>No posts found.</span>
+                </th:block>
+                
+                 <th:block th:each="post : ${posts}">
+                   <th:block th:replace="view/view :: post-view"></th:block>
+                </th:block>
+                    
+                  
+                    <!-- Pager-->
+                    <div class="d-flex justify-content-end mb-4"><!-- pagination -->
+					<div th:replace="fragments/pagination :: paginationGeneral"></div></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer-->
+        <div th:replace="fragments/fragments :: footer"></div>
+        
+        <!-- Bootstrap core JS-->
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/font-awesome/js/all.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+        <!-- Core theme JS-->
+        <script th:src="@{/js/scripts.js}"></script>
+    </body>
+</html>

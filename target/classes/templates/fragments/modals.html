@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<body>
+
+	<div th:fragment="success">
+	
+		<div class="modal fade" id="successModal" style="z-index: 9999">
+		  <div class="modal-dialog">
+		    <div class="modal-content rounded-2">
+		    
+		      <div class="modal-header success-header">
+		        <h5 class="modal-title" id="modalTitle"></h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      
+		      <div class="modal-body lora-style">
+		        <p id="modalMessage"></p>
+		      </div>
+		      
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary link-padding" data-bs-dismiss="modal">Close</button>
+		      </div>
+		      
+		    </div>
+		  </div>
+		</div>
+
+	</div>
+	
+	<div th:fragment="warning" >
+	
+		<div class="modal fade" id="warningModal" style="z-index: 9999">
+		  <div class="modal-dialog">
+		    <div class="modal-content rounded-2">
+		    
+		      <div class="modal-header warning-header">
+		        <h5 class="modal-title" id="modalTitle"></h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      
+		      <div class="modal-body lora-style">
+		        <p id="modalMessage"></p>
+		      </div>
+		      
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary link-padding" data-bs-dismiss="modal">Close</button>
+		      </div>
+		      
+		    </div>
+		  </div>
+		</div>
+
+	</div>
+	
+	<div th:fragment="error">
+	
+		<div class="modal fade" id="errorModal" style="z-index: 9999">
+		  <div class="modal-dialog">
+		    <div class="modal-content rounded-2">
+		    
+		      <div class="modal-header error-header">
+		        <h5 class="modal-title" id="modalTitle"></h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      
+		      <div class="modal-body lora-style">
+		        <p id="modalMessage"></p>
+		      </div>
+		      
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary link-padding" data-bs-dismiss="modal">Close</button>
+		      </div>
+		      
+		    </div>
+		  </div>
+		</div>
+
+	</div>
+	
+	<div th:fragment="confirm">
+		<div class="modal fade" id="confirmModal">
+		  <div class="modal-dialog">
+		    <div class="modal-content rounded-2">
+		    
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="modalTitle">Modal title</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      
+		      <div class="modal-body">
+		        <p id="modalMessage"></p>
+		      </div>
+		      
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary link-padding" data-bs-dismiss="modal">Close</button>
+		        <a class="btn btn-danger link-padding" href="" id="yesBtn">Yes</a>
+		      </div>
+		      
+		    </div>
+		  </div>
+		</div>
+	</div>
+	
+	<div th:fragment="confirmAjax">
+		<div class="modal fade" id="confirmModalAjax">
+		  <div class="modal-dialog">
+		    <div class="modal-content rounded-2">
+		    
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="modalTitle">Modal title</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      
+		      <div class="modal-body">
+		        <p id="modalMessage"></p>
+		      </div>
+		      
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary link-padding" data-bs-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-danger link-padding" id="yesBtn">Yes</a>
+		      </div>
+		      
+		    </div>
+		  </div>
+		</div>
+	</div>
+	
+	
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+		xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <th:block th:replace="fragments/fragments :: head('Verification Failed')"></th:block>
+    </head>
+    <body>
+    
+    	<!-- Toast -->
+        <div th:replace="fragments/toasts :: success"></div>
+        <div th:replace="fragments/toasts :: warning"></div>
+        <div th:replace="fragments/toasts :: error"></div>
+    
+       <!-- Navigation-->
+       <div sec:authorize="isAnonymous()" th:replace="fragments/fragments :: profileNav"></div>
+        <div sec:authorize="hasAuthority('blogger')" th:replace="fragments/fragments :: profileNav"></div>
+        <div sec:authorize="hasAuthority('admin')" th:replace="fragments/admin-fragments :: navigation"></div>
+	
+		<div style="height: 100px"></div>
+	
+		<!-- Page Content  -->
+		<article class="mb-4" id="font-style">
+			<div class="container px-4 px-lg-5">
+				<div class="row gx-4 gx-lg-5 justify-content-center">
+					<div class="col-md-10 col-lg-8 col-xl-7">     
+						<div class="text-center">
+		        			<h2>Account Verification</h2>
+		        			<h4>Your account was already verified, or the verification code is invalid.</h4>
+        					<p><a th:href="@{/}">Back Home</a></p>
+		        		</div>
+					</div>
+				</div>        
+			</div>		
+		</article>
+
+	<div style="height: 500px"></div>
+        
+        <!-- Footer-->
+        <div th:replace="fragments/admin-fragments :: footer"></div>
+        
+        <!-- Bootstrap core JS-->
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/font-awesome/js/all.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap-select/js/bootstrap-select.min.js}"></script>
+		
+		<script th:src="@{/js/main-script.js}"></script>
+	
+	<script type="text/javascript">
+	
+	</script>
+</body>
+</html>

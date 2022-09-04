@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <th:block th:replace="fragments/fragments :: head('Tag Form')"></th:block>
+    </head>
+    <body>
+       <!-- Navigation-->
+        <div th:replace="fragments/admin-fragments :: navigation"></div>
+        
+        <!-- Page content-->
+
+		<article class="mb-4" id="font-style">
+			<div class="container px-4 px-lg-5">
+				<div class="row gx-4 gx-lg-5 justify-content-center">
+	
+					<div class="col-md-10 col-lg-8 col-xl-7">
+						<form th:action="@{/tag/save}" method="post" th:object="${tag}" enctype="multipart/form-data"  onsubmit="return  checkTagUnique(this)">
+						
+						<div class="p-3 py-5">
+							<div class="d-flex justify-content-between align-items-center mb-3">
+								<h4 class="text-right">[[${pageTitle}]] Tag</h4>
+							</div>
+							
+							<input type="hidden" th:field="*{id}">
+							
+							<div class="row mt-3">
+							
+								<div class="col-md-12">
+									<label class="col-form-label">Category</label><br>
+									<select th:field="*{category}" class="selectpicker show-tick" data-width="100%" id="parentSelect">
+										<th:block th:each="cat : ${categories}">
+											<option th:value="${cat.id}">[[${cat.title}]]</option>
+										</th:block>
+									</select>
+								</div>
+								
+								<div class="col-md-12">
+									<label class="col-form-label">Title</label>
+									<input type="text" class="form-control" placeholder="Tag Name" th:field="*{title}"
+											required minlength="3" maxlength="75">
+								</div>
+								
+								<div class="col-md-12">
+									<label class="col-form-label">Description</label>
+									<textarea type="text" class="form-control" placeholder="Tag Description" th:field="*{description}" cols="3" rows="4"></textarea>
+								</div>
+								
+								<div class="col-md-12">
+									<label class="col-form-label">Slug</label>
+									<input type="text" class="form-control" placeholder="Tag Alias" th:field="*{slug}"
+											 minlength="3" maxlength="100">
+								</div>
+								
+								
+								
+							</div>
+							
+							<div class="mt-5 text-center">
+								<button class="btn btn-primary profile-button" type="submit">Save Tag</button>
+								<button type="button"  class="btn btn-secondary profile-button" onclick="cancel()">Cancel</button>
+							</div>
+							
+						</div>
+					</form>
+					</div>
+				</div>
+			</div>
+		</article>
+		
+		<div th:replace="fragments/modals :: success"></div>
+		<div th:replace="fragments/modals :: warning"></div>
+		<div th:replace="fragments/modals :: error"></div>
+	
+		<div style="height: 500px"></div>
+        
+        <!-- Footer-->
+        <div th:replace="fragments/admin-fragments :: footer"></div>
+        
+        <!-- Bootstrap core JS-->
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/font-awesome/js/all.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap-select/js/bootstrap-select.min.js}"></script>
+		<script th:src="@{/richText/jquery.richtext.min.js}"></script>
+		
+		<script th:src="@{/js/main-script.js}"></script>
+		<script th:src="@{/js/password-validation.js}"></script>
+		
+		<script type="text/javascript">
+			
+			var contextPath = "[[@{/}]]";
+			var csrfHeaderName = "[[${_csrf.headerName}]]";
+			var csrfValue = "[[${_csrf.token}]]";
+		
+			$(document).ready(function (){
+				
+			});
+			
+			function cancel(){
+				window.location = "[[@{/tag/list}]]";
+			}
+			
+			
+		</script>
+
+    </body>
+</html>

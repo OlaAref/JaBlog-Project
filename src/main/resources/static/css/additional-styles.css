@@ -1,0 +1,20 @@
+/* unvisited link */
+.column-links:link {
+  color: white;
+}
+
+/* visited link */
+.column-links:visited {
+  color: #F6E7D8;
+}
+
+/* mouse over link */
+.column-links:hover {
+  color: #AD8B73;
+}
+
+/* selected link */
+.column-links:active {
+  color: #FF9F45;
+} 
+

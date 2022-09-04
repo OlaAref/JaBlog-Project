@@ -1,0 +1,14 @@
+.success-header{
+	background-color: #2ED889;
+	border-radius: 4px 4px 0px 0px;
+}
+
+.warning-header{
+	background-color: #ffcc00;
+	border-radius: 4px 4px 0px 0px;
+}
+
+.error-header{
+	background-color: #CC3300;
+	border-radius: 4px 4px 0px 0px;
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+		xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<body>
+
+	<div th:fragment="post-view">
+		 <!-- Post preview-->
+         <div class="post-preview">
+             <a th:href="@{'/view/posts/'+${post.slug}}">
+                 <h2 class="post-title">[[${post.title}]]</h2>
+                 <h3 class="post-subtitle">[[${post.summary}]]</h3>
+             </a>
+             <p class="post-meta">
+                 Posted by
+                 <a th:href="@{'/view/posts/author/'+${post.author.id}+'/page/1?sortField='+${sortField}+'&sortDir='+${sortDir}+'&keyword='}">[[${post.author.fullName}]]</a>
+                 on <th:block th:text="${#temporals.format(post.publishedTime, 'MMMM dd, yyyy')}"></th:block>
+             </p>
+         </div>
+         <!-- Divider-->
+         <hr class="my-4"/>
+	</div>
+
+    
+	<div th:fragment="comment-view(child)">
+
+			<div class="d-flex mt-4">
+				<th:block th:if="${child.author} != null"><div class="vr border rounded-pill  me-2 randomColorBorder" style="opacity: 1"></div></th:block>
+				<th:block th:if="${child.author} == null"><div class="vr border border-2 border-dark rounded-pill me-2" style="opacity: 1"></div></th:block>
+				<div class="p-1 border-top " style="width: 100%">
+			        <div class="flex-shrink-0">
+			        	<div class="row mt-1 mb-3">
+			        		<div class="col-1">
+								<th:block th:if="${child.author} != null"><div th:replace="view/view::comment-icon-user(${child.author.fullName})"></div></th:block>
+								<th:block th:if="${child.author} == null"><div th:replace="view/view::comment-icon-anonymous"></div></th:block>
+							</div>
+				        	<div class="col-9 lh-1">
+				        		<th:block th:if="${child.author} != null"><div class="fw-bold">[[${child.author.fullName}]]</div></th:block>
+			                	<th:block th:if="${child.author} == null"><div class="fw-bold">Anonymous</div></th:block>
+			                	<span class="fs-6 fw-light small">[[${child.duration}]]</span>
+				        	</div>
+				        	<div class="col-2">
+					        	<a href="#" title="reply" class="link-primary" th:id="'replyLink'+${child.id}" th:data-comment-id="${child.id}"><i class="fa-solid fa-comment"></i></a>
+					        	
+					        	<th:block th:if="${child.author != null} and ${#authentication.name}==${child.author.email} and !${#authorization.expression('hasAuthority(''admin'')')}">
+									<a href="#" title="delete" class="link-danger" th:id="'deleteLink'+${child.id}" th:data-comment-id="${child.id}"><i class="fa-solid fa-trash-can"></i></a>
+								</th:block>
+								<th:block th:if="${#authorization.expression('hasAuthority(''admin'')')}">
+									<a href="#" title="delete" class="link-danger" th:id="'deleteLink'+${child.id}" th:data-comment-id="${child.id}"><i class="fa-solid fa-trash-can"></i></a>
+								</th:block>
+				        	</div>
+			        	</div>
+			        	
+			        </div>
+			        <div class="ms-3">
+				        
+			            [[${child.content}]]
+			            
+			            <div th:id="'replyDiv'+${child.id}"></div>
+			            
+			            <th:block th:unless="${#sets.isEmpty(child.children)}">
+				            <th:block th:each="c : ${child.children}">
+				            	<div th:replace="view/view::comment-view(${c})"></div>
+				            </th:block>
+			            </th:block>
+			        </div>
+			    </div>
+			    
+		    </div>
+
+	</div>
+	
+	<div th:fragment="comment-icon-user(commenter)" th:with="name=${#strings.substring(#strings.toLowerCase(commenter),0,1)}">
+		<span class="fa-stack" style="vertical-align: center;"> 
+			<i class="fa-solid fa-circle fa-stack randomColorIcon"></i> 
+			<i th:class="'fa-solid fa-'+${name}+' fa-stack-1x fa-inverse'"></i>
+		</span>
+	</div>
+	
+	<div th:fragment="comment-icon-anonymous">
+		<span class="fa-stack" style="vertical-align: center;"> 
+			<i class="fa-solid fa-circle fa-stack"></i> 
+			<i class="fa-solid fa-question fa-stack-1x fa-inverse"></i>
+		</span>
+	</div>
+	
+</body>
+</html>

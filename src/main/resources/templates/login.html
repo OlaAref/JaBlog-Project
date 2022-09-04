@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+	<head>
+        <th:block th:replace="fragments/fragments :: head('Login')"></th:block>
+    </head>
+	
+	<body>
+		<!-- Navigation-->
+        <div th:replace="fragments/fragments :: loginNav"></div>
+        
+        <!-- Page Header-->
+        <div style="height: 100px; background-color: gray;"></div>
+        <!-- Main Content-->
+	    <section th:style="'background-image: url(' + @{/image/home-bg.jpg} + ')'" >
+	    
+	      <form th:action="@{/login}" method="post">
+	      
+			  <div class="container py-5 h-100">
+			    <div class="row d-flex justify-content-center align-items-center h-100">
+			      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+			        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+			          <div class="card-body p-5 text-center">
+			
+			            <div class="mb-md-5 mt-md-4 pb-5">
+			
+			              <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+			              <p class="text-white-50 mb-5 lora-style">Please enter your email and password!</p>
+						  
+						  <!-- alert -->
+						  	<div th:if="${successMessage != null}">
+								<div th:replace="fragments/fragments :: successAlert(${successMessage})"></div>
+							</div>
+							
+							<div th:if="${emailChanged != null}">
+								<div th:replace="fragments/fragments :: alert(${emailChanged})"></div>
+							</div>
+						  
+						  <div th:if="${param.error}">
+						  	<small class="text-danger">Invalid Username / Password.</small>
+						  </div>
+						  
+						  <div th:if="${param.logout}">
+						  	<small class="text-success">You have been logged out.</small>
+						  </div>
+						  
+			              <div class="form-outline form-white mb-4 text-start font-style">
+			              	<label class="form-label" for="typeEmailX">Email</label>
+			                <input type="email" name="email" id="typeEmailX" class="form-control form-control-lg" />
+			              </div>
+			
+			              <div class="form-outline form-white mb-4 text-start font-style">
+			              	<label class="form-label" for="typePasswordX">Password</label>
+			                <input type="password" name="password" id="typePasswordX" class="form-control form-control-lg" />
+			              </div>
+			              
+			              <div class="form-outline form-white mb-4 text-start font-style">
+			              	<div class="form-check">
+								<input class="form-check-input" type="checkbox" name="remember-me" id="flexCheck">
+								<label class="form-check-label" for="flexCheck">
+									Remember Me
+								</label>
+							</div>
+			              </div>
+			              
+			              
+			
+			              <p class="small mb-5 pb-lg-2"><a class="text-white-50 lora-style" th:href="@{/password/requestPassword}">Forgot password?</a></p>
+			
+			              <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+			
+			              <div class="d-flex justify-content-center text-center mt-4 pt-1">
+			                <a th:href="@{/oauth2/authorization/facebook}" class="text-white"><i class="fab fa-facebook-f fa-lg mx-4 px-2"></i></a>
+			                <a th:href="@{/oauth2/authorization/google}" class="text-white"><i class="fab fa-google fa-lg"></i></a>
+			              </div>
+			
+			            </div>
+			
+			            <div>
+			              <p class="mb-0 lora-style">Don't have an account? <a th:href="@{/blogger/signup}" class="text-white-50 fw-bold">Sign Up</a></p>
+			            </div>
+			
+			          </div>
+			        </div>
+			      </div>
+			    </div>
+			  </div>
+			  
+		  </form>
+		  
+		</section>
+		
+		<!-- Footer-->
+        <div th:replace="fragments/fragments :: footer"></div>
+        
+        <!-- Bootstrap core JS-->
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/font-awesome/js/all.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+        <!-- Core theme JS-->
+        <script th:src="@{/js/scripts.js}"></script>
+        <script th:src="@{/js/main-script.js}"></script>
+	</body>
+	
+
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<body>
+
+	<div th:fragment="navigation">
+		
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="adminNav">
+			<div class="container">
+			
+				<a class="navbar-brand" th:href="@{/}" style="width: 65%"> 
+					<img alt="JaBlog" th:src="@{${GCP_Base_URI+SITE_LOGO}}" width="15%">
+				</a>
+				
+				<button class="navbar-toggler" type="button"
+					data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown"
+					aria-controls="navbarNavDarkDropdown" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				
+				
+				
+				<div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+				
+					<ul class="navbar-nav ms-auto py-4 py-lg-0">
+						<li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" th:href="@{/}">Home</a></li>
+						<li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" th:href="@{/setting/list}">Settings</a></li>
+					</ul>
+					
+					<ul class="navbar-nav">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Users </a>
+							<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+								<li><a class="dropdown-item" th:href="@{/user/list}">List Users</a></li>
+								<li><a class="dropdown-item" th:href="@{/user/new}">Add New User</a></li>
+							</ul>
+						</li>
+					</ul>
+					
+					<ul class="navbar-nav">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" th:href="@{/manage-table}" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Posts </a>
+							<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+								<li><a class="dropdown-item" th:href="@{/post/list}">List Posts</a></li>
+								<li><a class="dropdown-item" th:href="@{/post/new}">Add New Post</a></li>
+							</ul>
+						</li>
+					</ul>
+					
+					<ul class="navbar-nav">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" th:href="@{/category/list}" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Categories </a>
+							<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+								<li><a class="dropdown-item" th:href="@{/category/list}">List Categories</a></li>
+								<li><a class="dropdown-item" th:href="@{/category/new}">Add New Category</a></li>
+							</ul>
+						</li>
+					</ul>
+					
+					<ul class="navbar-nav">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" th:href="@{/tag/list}" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Tags </a>
+							<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+								<li><a class="dropdown-item" th:href="@{/tag/list}">List Tags</a></li>
+								<li><a class="dropdown-item" th:href="@{/tag/new}">Add New Tag</a></li>
+							</ul>
+						</li>
+					</ul>
+					
+					<th:block sec:authorize="isAuthenticated()">
+					<ul class="navbar-nav">
+						<li class="nav-item dropdown p-3">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="fa-solid fa-user"></i> 
+								<th:block sec:authentication="principal.fullName"></th:block>
+							</a>
+							
+							<ul class="dropdown-menu dropdown-menu-dark">
+								<li><a class="dropdown-item" th:href="@{/account/details}">Profile</a></li>
+								<li>
+									<form th:action="@{/logout}" method="POST">
+										<button type="submit" class="dropdown-item">
+											Logout
+										</button>
+									</form>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					</th:block>
+					
+				</div>
+				
+			</div>
+		</nav>
+	</div>
+
+
+	<div th:fragment="footer">
+		<footer class="py-5 bg-dark">
+			<div class="container">
+				<p class="m-0 text-center text-white" th:utext="${COPYRIGHT}"></p>
+			</div>
+		</footer>
+	</div>
+
+</body>
+</html>

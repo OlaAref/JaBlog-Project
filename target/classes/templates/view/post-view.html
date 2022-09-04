@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+		xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <th:block th:replace="fragments/fragments :: head(${post.title})"></th:block>
+ 	<style type="text/css">
+ 		
+ 	</style>
+    </head>
+    <body>
+        <!-- Navigation-->
+        <div th:replace="fragments/fragments :: navigation"></div>
+        
+        <!-- Page Header-->
+        <div th:replace="fragments/fragments :: pageHeaderWithoutSearch"></div>
+        
+        <!-- Page content-->
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-8">
+                	<nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4" id="font-style">
+			          <ol class="breadcrumb mb-0">
+			            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+			            <th:block th:each="postCat : ${postCategories}">
+			            	<li class="breadcrumb-item"><a th:href="@{'/view/posts/category/'+${postCat.slug}+'/page/1?sortField=publishedTime&sortDir=asc&keyword='}">[[${postCat.title}]]</a></li>
+			            </th:block>
+			            <li class="breadcrumb-item active" aria-current="page">[[${post.category.title}]]</li>
+			          </ol>
+			        </nav>
+                    <!-- Post content-->
+                    <article>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                        	<div class="row">
+	                        	<div class="col-11">
+		                            <!-- Post title-->
+		                            <h1 class="fw-bolder mb-1">[[${post.title}]]</h1>
+	                            </div>
+	                            <div class="col-1 justify-content-center">
+	                            	<th:block sec:authorize="isAuthenticated()">
+	                            		<div th:if="${authLikes == 'no'}" id="clickableDiv" class="likeDiv">
+	                            			<a th:href="@{'/views/authenticated/like/'+${post.slug}}"  id="authenticatedLike" onclick="authenticatedLike()">
+	                            				<i class="fa-solid fa-heart fa-2x text-secondary like-heart"></i>
+	                            			</a>
+	                            		</div>
+	                            		<div th:if="${authLikes == 'yes'}" id="clickableDiv" class="dislikeDiv">
+	                            			<a th:href="@{'/views/authenticated/like/'+${post.slug}}" id="authenticatedLike" onclick="authenticatedLike()">
+	                            				<i class="fa-solid fa-heart fa-2x text-danger like-heart"></i>
+	                            			</a>
+	                            		</div>
+	                            	</th:block>
+	                            	<th:block sec:authorize="isAnonymous()">
+	                            		<th:block th:if="${liked == 'no'}"><a th:href="@{'/views/anonymous/like/'+${post.slug}}" id="anonymousLike"><i class="fa-solid fa-heart fa-2x text-secondary like-heart"></i></a></th:block>
+	                            		<th:block th:if="${liked == 'yes'}"><i class="fa-solid fa-heart fa-2x text-danger"></i></th:block>
+	                            	</th:block>
+	                            	<span class="d-flex justify-content-evenly" id="likesCount">[[${post.likes}]]</span>
+	                            </div>
+                            </div>
+                            <!-- Post meta content-->
+                            <div class="text-muted fst-italic mb-2"> Updated on <th:block th:text="${#temporals.format(post.updatedTime, 'MMMM dd, yyyy')}"></th:block>
+                            by <a th:href="@{'/view/posts/author/'+${post.author.id}+'/page/1?sortField=publishedTime&sortDir=asc&keyword='}">[[${post.author.fullName}]]</a></div>
+                            <!-- Post categories-->
+                            <th:block th:each="tag : ${post.tags}">
+                            <a class="badge bg-secondary text-decoration-none link-light" th:href="@{'/view/posts/tag/'+${tag.slug}+'/page/1?sortField=publishedTime&sortDir=asc&keyword='}">[[${tag.title}]]</a>
+                            </th:block>
+                        </header>
+                        <!-- Preview image figure-->
+                        <figure class="mb-4"><img class="img-fluid rounded" th:src="@{${post.mainPicPath}}" th:alt="${post.title}" /></figure>
+                        <!-- Post content-->
+                        <section class="mb-5">relatdPosts
+                            <p class="fs-5 mb-4" th:utext="${post.content}"></p>
+                            <th:block th:unless="${post.summary.isEmpty()}">
+	                            <h2 class="fw-bolder mb-4 mt-5">Summary</h2>
+	                            <p class="fs-5 mb-4">[[${post.summary}]]</p>
+                            </th:block>
+                        </section>
+                    </article>
+                    
+                    <div class="text-success"><hr></div>
+                    
+                    <!-- Series Posts section-->
+                    <section class="mb-5">
+                        <th:block th:unless="${seriesPosts.isEmpty()}">
+                         <h2 class="fw-bolder mb-4 mt-5">Series Posts</h2>
+                         	<ul>
+	                         	<th:block th:each="seriesPost : ${seriesPosts}">
+	                         		<li><a th:href="@{'/view/posts/'+${seriesPost.slug}}">[[${seriesPost.title}]]</a></li>
+	                         	</th:block>
+                         	</ul>
+                        </th:block>
+                    </section>
+                    
+                    <!-- related posts section-->
+                    <section class="mb-5">
+                        <th:block th:unless="${relatdPosts.isEmpty()}">
+                         <h2 class="fw-bolder mb-4 mt-5">Related Posts</h2>
+                         	<ul>
+	                         	<th:block th:each="relatdPost : ${relatdPosts}">
+	                         		<li><a th:href="@{'/view/posts/'+${relatdPost.slug}}">[[${relatdPost.title}]]</a></li>
+	                         	</th:block>
+                         	</ul>
+                        </th:block>
+                    </section>
+                    
+                    <!-- Comments section-->
+                    <section class="mb-5">
+                        <div class="card bg-white border-0">
+                            <div class="card-body">
+                            
+                                <!-- Comment form-->
+                                <form id="commentForm" class="mb-4">
+                                	<input hidden="hidden" id="commentPost" th:value="${post.id}">
+                                	<textarea class="form-control" id="commentContent" rows="3" placeholder="Join the discussion and leave a comment!" required="required"></textarea>
+                                	<div class="d-flex justify-content-end link-padding"><button class="btn btn-primary" type="button" id="addComment">Add Comment</button></div>
+                                </form>
+                                
+                                <!-- Comment with nested comments-->
+                                <th:block th:each="comment : ${comments}">
+                                <th:block th:if="${comment.parent == null}">
+	                                <div th:replace="view/view :: comment-view(${comment})"></div>
+                                </th:block>
+                                </th:block>
+                            </div>
+                        </div>
+                    </section>
+                    
+                </div>
+                <!-- Side widgets-->
+                <div class="col-lg-4">
+                    <!-- Search widget-->
+                    <div class="card mb-4">
+                    	<form th:action="@{/view/posts/page/1}" method="get">
+	                        <div class="card-header font-style">Search</div>
+	                        <div class="card-body  lora-style">
+	                            <div class="input-group">
+	                            	<input type="hidden" name="sortField" th:value="published_time">
+									<input type="hidden" name="sortDir" th:value="${sortDir}">
+	                                <input name="keyword" th:value="${keyword}" class="form-control" type="text" placeholder="Enter search term..."/>
+	                                <button class="btn btn-primary" id="button-search" type="submit">Go!</button>
+	                            </div>
+	                        </div>
+                        </form>
+                    </div>
+                    <!-- Categories widget-->
+                    <div class="card mb-4 ">
+                        <div class="card-header font-style">Categories</div>
+                        <div class="card-body  lora-style">
+                            <div class="row">
+                            	<th:block th:each="cat : ${categories}">
+                                <div class="col-sm-6">
+                                    <ul class="list-unstyled mb-0">
+                                        <li><a th:href="@{'/view/posts/category/'+${cat.slug}+'/page/1?sortField=publishedTime&sortDir=asc&keyword='}">[[${cat.title}]]</a></li>
+                                    </ul>
+                                </div>
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="height: 200px"></div>
+            </div>
+        </div>
+        
+        <div th:replace="fragments/modals :: confirmAjax"></div>
+        
+        <!-- Footer-->
+        <div th:replace="fragments/fragments :: footer"></div>
+        
+        <!-- Bootstrap core JS-->
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/font-awesome/js/all.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+        <!-- Core theme JS-->
+        <script th:src="@{/js/scripts.js}"></script>
+        <script th:src="@{/js/main-script.js}"></script>
+        <script th:src="@{/js/comments.js}"></script>
+        <script>
+        var contextPath = "[[@{/}]]";
+		var csrfHeaderName = "[[${_csrf.headerName}]]";
+		var csrfValue = "[[${_csrf.token}]]";
+		var email = "[[${#authentication.name}]]";
+		var postId = "[[${post.id}]]";
+        $(document).ready(function (){
+			
+        });
+        </script>
+    </body>
+</html>

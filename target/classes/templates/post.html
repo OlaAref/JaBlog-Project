@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+		xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <th:block th:replace="fragments/fragments :: head('Post')"></th:block>
+    </head>
+    <body>
+        <!-- Navigation-->
+        <div sec:authorize="hasAuthority('blogger')" th:replace="fragments/fragments :: profileNav"></div>
+        <div sec:authorize="hasAuthority('admin')" th:replace="fragments/admin-fragments :: navigation"></div>
+        
+        <!-- Page Header-->
+        <div th:replace="fragments/fragments :: pageHeader"></div>
+        
+        <!-- Page content-->
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-8">
+                <div th:if="${message != null}">
+                	[[${message}]]
+                </div>
+                <form method="post" th:action="@{/testGcp}" enctype="multipart/form-data">
+                	<input type="file" name="file"> 
+                	<input type="submit">
+                </form>
+                
+                </div>
+            </div>
+            <div class="row">
+            	 <form method="get" th:action="@{/testDelete}"> 
+                	<input type="submit">
+                </form>
+            </div>
+        </div>
+        
+        <!-- Footer-->
+        <div th:replace="fragments/fragments :: footer"></div>
+        
+        <!-- Bootstrap core JS-->
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/font-awesome/js/all.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+        <!-- Core theme JS-->
+        <script th:src="@{js/scripts.js}"></script>
+    </body>
+</html>

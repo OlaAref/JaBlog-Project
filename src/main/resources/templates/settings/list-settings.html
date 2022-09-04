@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+		xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <th:block th:replace="fragments/fragments :: head('Site Settings')"></th:block>
+    </head>
+    <body>
+    
+       <!-- Navigation-->
+        <div sec:authorize="hasAuthority('blogger')" th:replace="fragments/fragments :: profileNav"></div>
+        <div sec:authorize="hasAuthority('admin')" th:replace="fragments/admin-fragments :: navigation"></div>
+        
+        <!-- Page content-->
+
+		<article class="mb-4" id="font-style">
+			<div class="container px-4 px-lg-5">
+				<div class="row gx-4 gx-lg-5 justify-content-center">
+					<div class="col-md-12 col-lg-10 col-xl-9 mt-5">
+					
+						<!-- Nav tabs -->
+						<ul class="nav nav-tabs" id="settingTab" role="tablist">
+						  <li class="nav-item" role="presentation">
+						    <button class="nav-link active" data-bs-toggle="tab" href="#general" role="tab" aria-selected="true">General</button>
+						  </li>
+						  <li class="nav-item" role="presentation">
+						    <button class="nav-link" data-bs-toggle="tab" href="#countries" role="tab" aria-selected="false">Countries</button>
+						  </li>
+						  <li class="nav-item" role="presentation">
+						    <button class="nav-link" data-bs-toggle="tab" href="#mailServer" role="tab" aria-selected="false">Mail Server</button>
+						  </li>
+						  <li class="nav-item" role="presentation">
+						    <button class="nav-link" data-bs-toggle="tab" href="#mailTemplates" role="tab" aria-selected="false">Mail Templates</button>
+						  </li>
+						</ul>
+						
+						<!-- Tab Panes -->
+						<div class="tab-content" id="settingTabContent">
+						  <div class="tab-pane fade show active" id="general" role="tabpanel">
+						  		<th:block th:replace="settings/general :: content"></th:block>
+						  </div>
+						  <div class="tab-pane fade" id="countries" role="tabpanel">
+								<th:block th:replace="settings/countries :: content"></th:block>
+						  </div>
+						  <div class="tab-pane fade" id="mailServer" role="tabpanel">
+						  		<th:block th:replace="settings/mail-server :: content"></th:block>
+						  </div>
+						  <div class="tab-pane fade" id="mailTemplates" role="tabpanel">
+						  	<th:block th:replace="settings/mail-templates :: content"></th:block>
+						  </div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+	
+		<!-- Toast -->
+        <div th:replace="fragments/toasts :: success"></div>
+        <div th:replace="fragments/toasts :: warning"></div>
+        <div th:replace="fragments/toasts :: error"></div>
+        
+        <!-- Notify Toast -->
+		<div th:replace="fragments/toasts :: notify"></div>
+		<div th:replace="fragments/toasts :: notifyWarning"></div>
+	
+		<div style="height: 500px"></div>
+        
+        <!-- Footer-->
+        <div th:replace="fragments/admin-fragments :: footer"></div>
+        
+        <!-- Bootstrap core JS-->
+        <div th:replace="fragments/fragments :: scripts"></div>
+        <script th:src="@{/js/country-settings.js}"></script>
+		
+		
+		<script type="text/javascript">
+		
+			var contextPath = "[[@{/}]]";
+			var csrfHeaderName = "[[${_csrf.headerName}]]";
+			var csrfToken = "[[${_csrf.token}]]";
+			
+			$(document).ready(function (){
+				$('#mailContent').richText();
+				
+				$('#photoFile').change(function() {
+					if(checkFileSize(this, 3)){
+						previewPic(this);
+					}
+					else{
+						$('#previewImage').attr('src', '');
+					}
+					
+				});
+				
+				var message = "[[${message}]]";
+				if(message != null && message != ''){
+					showToast('success', 'Setting', message);
+				}
+			});
+			
+		</script>
+
+    </body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+		xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <th:block th:replace="fragments/fragments :: head('Error 403')"></th:block>
+    </head>
+    <body>
+        <!-- Navigation-->
+        <div sec:authorize="hasAuthority('blogger')" th:replace="fragments/fragments :: profileNav"></div>
+        <div sec:authorize="isAnonymous()" th:replace="fragments/fragments :: profileNav"></div>
+        <div sec:authorize="hasAuthority('admin')" th:replace="fragments/admin-fragments :: navigation"></div>
+        
+        <!-- Page Header-->
+        <div th:replace="fragments/fragments :: pageHeaderWithoutSearch"></div>
+        
+        <!-- Main Content-->
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                    	<div style="padding-top: 80px;"></div>
+                    	<h1 class="text-center text-danger"><i class="fa-solid fa-hand fa-8x"></i></h1>
+                        <h2 class="text-center text-danger">Sorry, you don't have permission to access this page!!</h2>
+                        <div style="padding-top: 100px;"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Footer-->
+         <div th:replace="fragments/fragments :: footer"></div>
+         
+        <!-- Bootstrap core JS-->
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/font-awesome/js/all.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+        <!-- Core theme JS-->
+        <script th:src="@{/js/scripts.js}"></script>
+    </body>
+</html>
